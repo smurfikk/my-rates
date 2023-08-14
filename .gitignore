@@ -1,0 +1,9 @@
+venv/
+test.py
+.DS_store
+.idea/
+**/__pycache__
+*.db
+simple_env
+*.log
+.env
