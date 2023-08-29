@@ -8,8 +8,8 @@ def main():
     markup.add(
         InlineKeyboardButton(text="Number/TON", callback_data="draw_graph:number:ton"),
         InlineKeyboardButton(text="TON/USDT", callback_data="draw_graph:ton:usdt"),
-        InlineKeyboardButton(text="USDT/RUB", callback_data="draw_graph:usdt:rub"),
-        InlineKeyboardButton(text="TON/RUB", callback_data="draw_graph:ton:rub"),
+        InlineKeyboardButton(text="RUB/USDT", callback_data="draw_graph:rub:usdt"),
+        InlineKeyboardButton(text="RUB/TON", callback_data="draw_graph:rub:ton"),
     )
     markup.add(
         InlineKeyboardButton(text="Канал", url=config.channel_url),
