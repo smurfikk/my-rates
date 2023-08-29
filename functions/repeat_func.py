@@ -17,7 +17,7 @@ async def get_rates() -> None:
 
 def get_cryptobot() -> str:
     headers = {
-        "Crypto-Pay-API-Token": "114575:AALg2CZcdNCQKziM4g3J9pXUBv1j8g2tdSf"
+        "Crypto-Pay-API-Token": config.cryptobot_token
     }
     res = requests.get("https://pay.crypt.bot/api/getExchangeRates", headers=headers)
     res = res.json()
