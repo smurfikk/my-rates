@@ -46,9 +46,9 @@ def draw_graph(data: list[tuple], from_currency: str, to_currency: str) -> str:
         ]
     )
     fig.update_layout(
-        title=f'{from_currency.upper()} TO {to_currency.upper()}',
+        title=f'{from_currency.upper()} to {to_currency.upper()}',
         xaxis_title='Date',
-        yaxis_title=f'Price ({to_currency})',
+        yaxis_title=f'Price ({to_currency.upper()})',
         xaxis_rangeslider_visible=False
     )
 
