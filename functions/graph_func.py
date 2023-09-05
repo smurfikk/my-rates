@@ -1,7 +1,7 @@
 from datetime import timedelta, datetime
 
 from functions.func import get_date, connect
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 
 
 def get_graph(_type: str, from_currency: str, to_currency: str) -> str:
@@ -13,8 +13,8 @@ def get_graph(_type: str, from_currency: str, to_currency: str) -> str:
 def short_graph(from_currency: str, to_currency: str) -> str:
     date = get_date() - timedelta(days=2)
     conn, cursor = connect()
-    cursor.execute("SELECT strftime('%Y-%m-%d %H:%M:%S', date) AS hour, AVG(price) FROM rates "
-                   "WHERE from_currency = ? AND to_currency = ? AND date >= ? GROUP BY hour",
+    cursor.execute("SELECT date, price FROM rates "
+                   "WHERE from_currency = ? AND to_currency = ? AND date >= ?",
                    (from_currency, to_currency, date))
     data = cursor.fetchall()
     conn.close()
@@ -24,8 +24,8 @@ def short_graph(from_currency: str, to_currency: str) -> str:
 def long_graph(from_currency: str, to_currency: str) -> str:
     date = get_date() - timedelta(days=31)
     conn, cursor = connect()
-    cursor.execute("SELECT strftime('%Y-%m-%d %H:00:00', date) AS hour, AVG(price) FROM rates "
-                   "WHERE from_currency = ? AND to_currency = ? AND date >= ? GROUP BY hour",
+    cursor.execute("SELECT date, price FROM rates "
+                   "WHERE from_currency = ? AND to_currency = ? AND date >= ?",
                    (from_currency, to_currency, date))
     data = cursor.fetchall()
     conn.close()
@@ -33,18 +33,26 @@ def long_graph(from_currency: str, to_currency: str) -> str:
 
 
 def draw_graph(data: list[tuple], from_currency: str, to_currency: str) -> str:
-    dates = [datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S").strftime("%d %b %H:%M") for row in data]
+    dates = [datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S.%f") for row in data]
     prices = [row[1] for row in data]
-    plt.figure(figsize=(12, 6))
-    plt.plot(dates, prices)
-    plt.xlabel("Дата")
-    plt.ylabel("Цена")
-    plt.title(f"Изменение курса обмена {from_currency.upper()} на {to_currency.upper()}")
-    plt.xticks(rotation=60, horizontalalignment='center')
-    plt.tight_layout()
-    if len(dates) > 35:
-        plt.xticks(dates[::len(dates) // 35])
-    plt.grid()
+    fig = go.Figure(
+        data=[
+            go.Scatter(
+                x=dates,
+                y=prices,
+                mode='lines',
+                line={'color': '#ff006a'}
+            ),
+        ]
+    )
+    fig.update_layout(
+        title=f'The Candlestick graph for {from_currency}',
+        xaxis_title='Date',
+        yaxis_title=f'Price ({to_currency})',
+        xaxis_rangeslider_visible=False
+    )
+    fig.update_yaxes(tickprefix=f'{to_currency.upper()} ')
+
     file_name = f"{from_currency}_{to_currency}.png"
-    plt.savefig(file_name)
+    fig.write_image(file_name, width=1024)
     return file_name
