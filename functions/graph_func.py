@@ -46,12 +46,11 @@ def draw_graph(data: list[tuple], from_currency: str, to_currency: str) -> str:
         ]
     )
     fig.update_layout(
-        title=f'The Candlestick graph for {from_currency}',
+        title=f'{from_currency.upper()} TO {to_currency.upper()}',
         xaxis_title='Date',
         yaxis_title=f'Price ({to_currency})',
         xaxis_rangeslider_visible=False
     )
-    fig.update_yaxes(tickprefix=f'{to_currency.upper()} ')
 
     file_name = f"{from_currency}_{to_currency}.png"
     fig.write_image(file_name, width=1024)
