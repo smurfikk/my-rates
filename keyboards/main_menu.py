@@ -3,7 +3,12 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import config
 
 
-def main():
+def main() -> InlineKeyboardMarkup:
+    """
+    Главная клавиатура бота.
+
+    :return: Клавиатура.
+    """
     markup = InlineKeyboardMarkup(row_width=2)
     markup.add(
         InlineKeyboardButton(text="Number/TON", callback_data="draw_graph:number:ton"),
@@ -17,7 +22,14 @@ def main():
     return markup
 
 
-def select_type_graph(from_currency: str, to_currency: str):
+def select_type_graph(from_currency: str, to_currency: str) -> InlineKeyboardMarkup:
+    """
+    Клавиатура выбора типа графика.
+
+    :param from_currency: Первая валюта.
+    :param to_currency: Вторая валюта.
+    :return: Клавиатура.
+    """
     markup = InlineKeyboardMarkup(row_width=2)
     markup.add(
         InlineKeyboardButton(text="За 2 дня", callback_data=f"draw_graph:{from_currency}:{to_currency}:short"),
@@ -27,7 +39,13 @@ def select_type_graph(from_currency: str, to_currency: str):
     return markup
 
 
-def back(call_data: str):
+def back(call_data: str) -> InlineKeyboardMarkup:
+    """
+    Клавиатура с кнопкой назад.
+
+    :param call_data: значение callback_data.
+    :return: Клавиатура.
+    """
     markup = InlineKeyboardMarkup(row_width=2)
     markup.add(
         InlineKeyboardButton(text="Назад", callback_data=f"{call_data}"),

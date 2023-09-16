@@ -40,13 +40,3 @@ class ThrottlingMiddleware(BaseMiddleware):
             await message.reply("<b>❗ Пожалуйста, не спамьте.</b>")
         await asyncio.sleep(delta)
         thr = await dispatcher.check_key(key)
-
-
-def rate_limit(limit: int, key=None):
-    def decorator(func):
-        setattr(func, "throttling_rate_limit", limit)
-        if key:
-            setattr(func, "throttling_key", key)
-        return func
-
-    return decorator
